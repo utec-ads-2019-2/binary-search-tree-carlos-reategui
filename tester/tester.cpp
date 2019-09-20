@@ -48,6 +48,6 @@ void Tester::testBSFTree(Mocker mocker, vector<T> elements) {
 template <typename T>
 void Tester::sortAndPrune(vector<T>& array) {
     sort(array.begin(), array.end());
-    auto last = unique(array.begin(), array.end());
-    array.erase(last, array.end()); 
+    //auto last = unique(array.begin(), array.end());
+    //array.erase(last, array.end());
 }

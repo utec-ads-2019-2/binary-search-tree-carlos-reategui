@@ -13,11 +13,16 @@ class Node {
     Node<T> *left;
     Node<T> *right;
 
+public:
+    Node() : left(nullptr), right(nullptr) {}
+
+private:
+
     template<class>
     friend class BSTree; 
 
     template<class>
-    friend class Iterator; 
+    friend class Iterator;
 };
 
 #endif
