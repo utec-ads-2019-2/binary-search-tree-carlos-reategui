@@ -8,16 +8,28 @@ int main(int argc, char *argv[]) {
     cout << "Binary Search Tree Practice" << endl;
     cout << "===========================================================" << endl << endl;
 
-    //Tester::execute();
-    auto tree = new BSTree<int>();
-    tree->insert(1);
-    tree->insert(2);
-    tree->insert(3);
-    tree->insert(4);
-    tree->insert(5);
-    tree->traversePreOrder(tree->getRoot()); cout << endl;
-    tree->traverseInOrder(tree->getRoot()); cout << endl;
-    tree->traversePostOrder(tree->getRoot()); cout << endl;
-    cout << tree->depth(tree->getRoot());
+    Tester::execute();
+    /*auto tree = new BSTree<int>();
+    int data[] = {1, 2, 3, 4, 5, 6};
+    for (int i : data) tree->insert(i);
+    for (int i : data) cout << i << (tree->find(i) ? " True" : " False") << endl;
+    tree->traversePreOrder();
+    tree->traverseInOrder();
+    tree->traversePostOrder();
+    cout << "Height " <<(tree->height()) << endl;
+    cout << "Size " << tree->size() << endl;
+    //for (int i : data) tree->remove(i);
+    tree->remove(1);
+    tree->remove(2);
+    tree->remove(3);
+    tree->remove(4);
+    tree->remove(5);
+    tree->remove(6);
+    tree->traversePreOrder();
+    tree->traverseInOrder();
+    tree->traversePostOrder();
+    cout << "Height " <<(tree->height()) << endl;
+    cout << "Size " << tree->size() << endl;
+    auto it = tree->begin();*/
     return EXIT_SUCCESS;
 }

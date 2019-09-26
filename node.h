@@ -14,7 +14,15 @@ class Node {
     Node<T> *right;
 
 public:
-    Node() : left(nullptr), right(nullptr) {}
+    explicit Node(T data) : left(nullptr), right(nullptr), data(data) {}
+
+    void killSelf() {
+        if (this) {
+            this->right->killSelf();
+            this->left->killSelf();
+            delete this;
+        }
+    }
 
 private:
 

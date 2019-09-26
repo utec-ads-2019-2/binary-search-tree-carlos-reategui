@@ -3,70 +3,121 @@
 
 #include "node.h"
 #include "iterator.h"
+#include <string>
 
 template <typename T> 
 class BSTree {
     Node<T> *root;
     unsigned int nodes;
 
+    Node<T> *findMinDataNode(Node<T> * node) {
+        while (node->left)
+            node = node->left;
+        return node;
+    }
+
+    Node<T> *removeNode(Node<T> * node, T data) {
+        if (!node)
+            return node;
+        else if (data > node->data)
+            node->right = removeNode(node->right, data);
+        else if (data < node->data)
+            node->left = removeNode(node->left, data);
+        else {
+            if (!node->right) {
+                auto temp = node->left;
+                delete node;
+                return temp;
+            }
+            else if (!node->left) {
+                auto temp = node->right;
+                delete node;
+                return temp;
+            }
+            auto minDataNode = findMinDataNode(node->right);
+            node->data = minDataNode->data;
+            node->right = removeNode(node->right, minDataNode->data);
+        }
+        return node;
+    }
+
+    void preOrder(Node<T> *node) {
+        if (node) {
+            cout << node->data << " ";
+            preOrder(node->left);
+            preOrder(node->right);
+        }
+    }
+
+    void inOrder(Node<T> *node) {
+        if (node) {
+            inOrder(node->left);
+            cout << node->data << " ";
+            inOrder(node->right);
+        }
+    }
+
+    void postOrder(Node<T> *node) {
+        if (node) {
+            postOrder(node->left);
+            postOrder(node->right);
+            cout << node->data << " ";
+        }
+    }
+
+    size_t findHeight(Node<T> *node) {
+        if (node)
+            return findHeight(node->right) > findHeight(node->left) ? findHeight(node->right) + 1 : findHeight(node->left) + 1;
+        return 0;
+    }
+
+    bool findNode(Node<T> *node, T data) {
+        if (node) {
+            if (data == node->data)
+                return true;
+            else if (data < node->data)
+                return findNode(node->left, data);
+            else if (data > node->data)
+                return findNode(node->right, data);
+        }
+        return false;
+    }
+
+    void insertNode(Node<T> *node, T data) {
+        if (data > node->data) {
+            if (node->right)
+                insertNode(node->right, data);
+            else
+                node->right = new Node<T>(data);
+        } else {
+            if (node->left)
+                insertNode(node->left, data);
+            else node->left = new Node<T>(data);
+        }
+    }
+
     public:
         BSTree() : root(nullptr), nodes(0) {};
 
-        Node<T>* getRoot() {
-            return root;
+        bool find(T data) {
+            return findNode(root, data);
         }
 
-        bool find(T data) {
-            auto newNode = new Node<T>();
-            newNode->data = data;
-            auto currentNode = root;
-            while (currentNode) {
-                if (data == currentNode->data)
-                    return true;
-                else
-                    if (data <= currentNode->data)
-                        currentNode = currentNode->left;
-                    else
-                        currentNode = currentNode->right;
-            }
-            return false;
-        } 
-
         void insert(T data) {
-            auto newNode = new Node<T>();
-            newNode->data = data;
-            if (root == nullptr)
-                root = newNode;
-            else {
-                Node<T> * parent = nullptr, * currentNode = root;
-                while(currentNode) {
-                    parent = currentNode;
-                    if (data <= currentNode->data)
-                        currentNode = currentNode->left;
-                    else
-                        currentNode = currentNode->right;
-                }
-                if (data <= parent->data)
-                    parent->left = newNode;
-                else
-                    parent->right = newNode;
-            }
+            if (root)
+                insertNode(root, data);
+            else
+                root = new Node<T>(data);
             nodes++;
         }
 
         bool remove(T data) {
-            /*auto newNode = new Node<T>();
-            newNode->data = data;
-            auto currentNode = root;
-            while (currentNode) {
-                if (data == currentNode->data)
-                    return true;
-                else
-                if (data <= currentNode->data)
-                    currentNode = currentNode->left;
-                else
-                    currentNode = currentNode->right;
-            }*/
+            if (find(data) and root) {
+                root = removeNode(root, data);
+                --nodes;
+                return true;
+            }
+            return false;
         }
 
         size_t size() {
@@ -74,40 +125,35 @@ class BSTree {
         }
 
         size_t height() {
-
+            return findHeight(root);
         }
 
-        void traversePreOrder(Node<T> * Root) {
-            if (Root == nullptr) return;
-            cout << Root->data << " ";
-            traversePreOrder(Root->left);
-            traversePreOrder(Root->right);
+        void traversePreOrder() {
+            preOrder(root);
+            cout << endl;
         }
 
-        void traverseInOrder(Node<T> * Root) {
-            if (Root == nullptr) return;
-            traverseInOrder(Root->left);
-            cout << Root->data << " ";
-            traverseInOrder(Root->right);
+        void traverseInOrder() {
+            inOrder(root);
+            cout << endl;
         }
 
-        void traversePostOrder(Node<T> * Root) {
-            if (Root == nullptr) return;
-            traversePostOrder(Root->left);
-            traversePostOrder(Root->right);
-            cout << Root->data << " ";
+        void traversePostOrder() {
+            postOrder(root);
+            cout << endl;
         }
 
         Iterator<T> begin() {
-            // TODO
+            return Iterator(root, false);
         }
 
-        Iterator<T> end() { 
-            // TODO
+        Iterator<T> end() {
+            return Iterator(root, true);
         }
 
         ~BSTree() {
-            // TODO
+            root->killSelf();
         }
 };
+
 #endif
