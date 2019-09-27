@@ -144,11 +144,11 @@ class BSTree {
         }
 
         Iterator<T> begin() {
-            return Iterator(root, false);
+            return Iterator<T>(root, 'b');
         }
 
         Iterator<T> end() {
-            return Iterator(root, true);
+            return Iterator<T>(root, 'e');
         }
 
         ~BSTree() {
