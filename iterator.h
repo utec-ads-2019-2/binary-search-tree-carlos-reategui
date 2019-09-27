@@ -9,6 +9,7 @@ class Iterator {
     private:
         Node<T> *current;
         std::stack<Node<T>*> nodes;
+        std::stack<Node<T>*> descendingNodes;
 
     public:
         Iterator() : current(nullptr) {}
@@ -35,6 +36,7 @@ class Iterator {
 
         Iterator<T> operator++() {
             if (!nodes.empty() and current) {
+                descendingNodes.push(nodes.top());
                 if (current->right) {
                     auto currentRight = current->right;
                     nodes.pop();
@@ -51,6 +53,14 @@ class Iterator {
             else
                 current = nodes.top();
             return *this;
+        }
+
+        Iterator<T>& operator--() {
+            if (!descendingNodes.empty()) {
+                current = descendingNodes.top();
+                descendingNodes.pop();
+                return *this;
+            }
         }
 
         T operator*() {
