@@ -20,6 +20,7 @@ class BSTree {
         if (!node)
             return node;
         else if (data > node->data)
+            // Qué retornas aquí?
             node->right = removeNode(node->right, data);
         else if (data < node->data)
             node->left = removeNode(node->left, data);
@@ -30,6 +31,8 @@ class BSTree {
                 return temp;
             }
             else if (!node->left) {
+                // Dónde colocas como null el hijo?
+                // Estás retornando la data borrada? 
                 auto temp = node->right;
                 delete node;
                 return temp;

@@ -35,6 +35,7 @@ class Iterator {
         }
 
         Iterator<T> operator++() {
+            // Debido a como se comparta tu remove, quizás genere problemas en tu iteración por la basura
             if (!nodes.empty() and current) {
                 descendingNodes.push(nodes.top());
                 if (current->right) {
@@ -61,9 +62,12 @@ class Iterator {
                 descendingNodes.pop();
                 return *this;
             }
+
+            // El return debería estar afuera
         }
 
         T operator*() {
+            // Deberías lanzar una excepción para controlar el caso, sino dará warning
             if (current) return current->data;
         }
 };
